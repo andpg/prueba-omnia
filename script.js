@@ -1,4 +1,4 @@
-import { readFile } from 'node:fs';
+import { readFile, writeFile } from 'node:fs';
 
 readFile('./input.txt', 'utf8', (err, data) => {
   if (err) throw err;
@@ -42,11 +42,17 @@ readFile('./input.txt', 'utf8', (err, data) => {
     parked_cars.push(parking_car)
   }
 
+  let output = []
   for (let car of awaiting_cars) {
     if (parked_cars.includes(car)) {
-      console.log(`El auto de la posición inicial ${car} aparcó en ${position.get(car)}`)
+      output.push(`El auto de la posición inicial ${car} aparcó en ${position.get(car)}\n`)
     } else {
-      console.log(`El auto de la posición inicial ${car} no aparcó`)
+      output.push(`El auto de la posición inicial ${car} no aparcó\n`)
     }
   }
-}); 
+
+  writeFile('./output.txt', output.join(''), 'utf8', (err) => {
+    if (err) throw err;
+    console.log('Guardado en output.txt');
+  })
+});
